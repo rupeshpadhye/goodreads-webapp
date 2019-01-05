@@ -1,24 +1,33 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import path from 'path'
+import proxy from 'express-request-proxy'
+
 const app = express()
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 const router = express.Router()
 
 const staticFiles = express.static(path.join(__dirname, '../../client/build'))
 app.use(staticFiles)
 
-router.get('/cities', (req, res) => {
-  const cities = [
-    {name: 'New York City', population: 8175133},
-    {name: 'Los Angeles',   population: 3792621},
-    {name: 'Chicago',       population: 2695598}
-  ]
-  res.json(cities)
-})
+
+router.use('/api/*', (req, res, next) => {
+  console.log(req.originalUrl)
+  proxy({
+    url: 'https://www.goodreads.com/' + '/*',
+    query: {
+      key: '78MvvU3PPhC0lqafV4QtbA'
+    },
+    timeout: 60000,
+    headers: {},
+  })(req, res, next);
+
+});
+
+
 
 app.use(router)
 

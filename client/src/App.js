@@ -1,27 +1,20 @@
-import React, { Component } from 'react';
-import './App.css';
+import React from 'react';
+import { Layout } from 'antd';
+import SearchBooks from './SearchBooks';
 
-class App extends Component {
-  state = {cities: []}
 
-  async componentDidMount() {
-    const response = await fetch('/cities')
-    const cities   = await response.json()
+const { Header, Content } = Layout;
 
-    this.setState({cities: cities})
-  }
-
-  render() {
-    return (
-      <div>
-        <ul>
-          {this.state.cities.map( city => {
-            return <li key={city.name}> <b>{city.name}</b>: {city.population}</li>
-          })}
-        </ul>
-      </div>
-    );
-  }
-}
-
+const App = () => (
+  <Layout className="app">
+    <Layout className="app-background">
+      <Content className="content">
+        <SearchBooks />
+      </Content>
+    </Layout>
+    <Layout className="footer">
+      Powered by Goodreads API
+    </Layout>
+  </Layout>
+);
 export default App;

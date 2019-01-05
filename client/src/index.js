@@ -1,9 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, PureComponent } from 'react';
+import { render } from 'react-dom';
+import './style.css';
 import App from './App';
-import './index.css';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+
+render(<App />, document.getElementById('root'));
