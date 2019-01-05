@@ -1,4 +1,4 @@
-# **Goodreads-Book-Search**
+# **Goodreads-Webapp**
 
 This application uses goodreads api to look for books by title, author or isbn code.
 
@@ -10,23 +10,19 @@ This application uses goodreads api to look for books by title, author or isbn c
 Having done that, here is how to run the application locally in development mode.
 
 **Clone the repo:**
-
-
 **Install dependencies:**
-
-    yarn install
+ >  yarn install
 
 **Starting the application in development mode:**
-  Run following command from the root folder
-   > yarn start
+ - Run following command from the root folder
+ > yarn start
 
 **Running the production mode:**
-  Run following command from the root folder
+  - Run following command from the root folder
    > yarn start:prod
 
 # Testing the App:
-
- To test the clint (React) components `cd client` and run
+- To test the clint (React) components `cd client` and run
     > yarn test
 
 # Features In Current Version:
