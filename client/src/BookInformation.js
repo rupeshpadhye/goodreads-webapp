@@ -13,7 +13,8 @@ const BookInformation = (props) => {
                 </Col>
                 <Col md={18}>
                     <Row><h1>{title}</h1></Row>
-                    <Row> {authors && <h3>By {(authors || []).map(author => author.name).join()}</h3>} </Row>
+                    <Row> {authors && <h3>By {(authors || []).map(
+                        author => <a key={author.id} href="#" onClick={() => props.getAuthorInfo(author)}> {author.name} </a>)}</h3>} </Row>
                     <Row>
                         <Col md={8}>
                             <Rate value={average_rating} disabled />

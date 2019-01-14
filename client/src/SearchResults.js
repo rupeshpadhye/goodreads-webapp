@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Col, Row, Spin } from 'antd';
-import { fetchBooks, fetchBookDetails } from './api';
+import { Col, Row, Spin, Modal } from 'antd';
+import { fetchBooks, fetchBookDetails, fetchAuthorDetails } from './api';
 import BookList from './BookList';
 import BookInformation from './BookInformation';
+import AuthorInformation from './AuthorInformation';
 
 export const isQuery = Component => props => {
     const { query } = props;
@@ -20,12 +21,13 @@ export class ResultView extends Component {
         this.state = {
             selectedBook: undefined,
             totalItems: this.props.totalItems,
-            books: this.props.books
+            books: this.props.books,
+            visible: false,
         }
     }
 
     handlePageChanged = (page) => {
-        fetchBooks(this.state.query, page).then(data => {
+        fetchBooks(this.props.query, page).then(data => {
             this.setState({
                 books: data.books,
                 totalItems: data.totalItems
@@ -42,8 +44,35 @@ export class ResultView extends Component {
         });
     }
 
+    handleAuthorInfo = (author) => {
+        console.log(author);
+        const { id, name } = author;
+        fetchAuthorDetails(id).then((response) => {
+
+            this.setState({
+                visible: true,
+                authorInfo: response.authorInfo,
+                modalTitle: name
+            }, () => {
+                console.log(this.state);
+            })
+        });
+    }
+
+    handleOk = () => {
+        this.setState({
+            visible: false,
+        });
+    }
+
+    handleCancel = () => {
+        this.setState({
+            visible: false,
+        });
+    }
+
     render() {
-        const { totalItems, books, selectedBook } = this.state;
+        const { totalItems, books, selectedBook, visible, modalTitle, authorInfo } = this.state;
         return (
             <Row gutter={16} style={{ margin: '1rem' }}>
                 <Col lg={0} md={6} sm={4} />
@@ -61,7 +90,15 @@ export class ResultView extends Component {
                     <Row gutter={8}>
                         <Col lg={0} md={24} sm={24} style={{ height: '1rem' }} />
                         <Col>
-                            {selectedBook && <BookInformation bookInfo={selectedBook} />}
+                            <Modal
+                                title={modalTitle}
+                                visible={visible}
+                                onOk={this.handleOk}
+                                onCancel={this.handleCancel}
+                            >
+                                <AuthorInformation authorInfo={authorInfo} />
+                            </Modal>
+                            {selectedBook && <BookInformation bookInfo={selectedBook} getAuthorInfo={this.handleAuthorInfo} />}
                         </Col>
                     </Row>
                 </Col>

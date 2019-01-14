@@ -79,3 +79,26 @@ export const fetchBookDetails = (bookId) => {
   });
 
 }
+
+export const fetchAuthorDetails = (id) => {
+  return new Promise((resolve, reject) => {
+    fetch(`/api/author/show.xml/?id=${id}`)
+      .then(response => response.text())
+      .then(data => {
+        const res = convert.xml2js(data, {
+          compact: true,
+          trim: true,
+          nativeType: false,
+          ignoreDeclaration: true,
+          ignoreInstruction: true,
+          ignoreAttributes: true,
+          ignoreComment: true,
+          textFn: removeJsonTextAttribute
+        }).GoodreadsResponse;
+
+        resolve({
+          authorInfo: res.author
+        });
+      }).catch(e => reject('something went wrong'));
+  });
+}
